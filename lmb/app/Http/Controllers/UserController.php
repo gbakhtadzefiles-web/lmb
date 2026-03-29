@@ -71,7 +71,7 @@ class UserController extends Controller
     }
 
     /**
-     * Enable a user account.
+     * Enable a user account.....
      */
     public function enableUser($userId)
     {
