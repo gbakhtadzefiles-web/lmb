@@ -26,10 +26,15 @@ function calculateInterest($loan, $pdo) {
             $stmt->execute(['loanId' => $loan['loan_id']]);
         }
 
-        $interestAmount = ($loan['loan_amount'] * $loan['interest_rate']) / 100;
-        $newNextPaymentDate = date('Y-m-d', strtotime('+10 days'));
+        // Calculate interest based on interest_rate and add it
+        $interestRate = (float) $loan['interest_rate'];
+        $interestAmount = ($loan['loan_amount'] * $interestRate) / 100;
 
-        // Update the loan with new interest amount and next payment date
+        // Use number_of_d to determine next payment date interval
+        $days = (int) $loan['number_of_d'];
+        $newNextPaymentDate = date('Y-m-d', strtotime("+{$days} days"));
+
+        // Update the loan
         $updateQuery = "UPDATE loans SET 
                         interest = interest + :interestAmount, 
                         next_payment_amount = next_payment_amount + :interestAmount, 
@@ -46,7 +51,10 @@ function calculateInterest($loan, $pdo) {
         $insertQuery = "INSERT INTO interestcalculations (loan_id, calculation_date, interest_amount)
                         VALUES (:loanId, CURDATE(), :interestAmount)";
         $stmt = $pdo->prepare($insertQuery);
-        $stmt->execute(['loanId' => $loan['loan_id'], 'interestAmount' => $interestAmount]);
+        $stmt->execute([
+            'loanId' => $loan['loan_id'], 
+            'interestAmount' => $interestAmount
+        ]);
 
         $pdo->commit();
     } catch (Exception $e) {
@@ -62,6 +70,7 @@ $stmt = $pdo->prepare($query);
 $stmt->execute([$today]);
 $loans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Process each loan
 foreach ($loans as $loan) {
     calculateInterest($loan, $pdo);
 }

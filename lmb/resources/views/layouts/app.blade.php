@@ -24,7 +24,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
@@ -57,13 +57,21 @@
                 </div>
             </li>
                         <a class="nav-item nav-link" href="/clients">კლიენტები</a>
-                        <a class="nav-item nav-link" href="/users">მომხმარებლები</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                პარამეტრები
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/users">მომხმარებლები</a>
+                                <a class="dropdown-item" href="{{ route('branches.index') }}">ფილიალები</a>
+                            </div>
+                        </li>
                         <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
                     რეპორტები
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/loans/filter">გაცმები</a>
+                    <a class="dropdown-item" href="/reports/loans">გაცმები</a>
                     <a class="dropdown-item" href="/payments/filter">გადახდები</a> <!-- Your new item -->
                     <a class="dropdown-item" href="#">სხვა</a> <!-- Your new item -->
                 </div>

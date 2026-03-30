@@ -30,9 +30,10 @@ class UserController extends Controller
         $users = User::with(['role','branch'])->whereIn('status', [1, 2])->get();
         return view('users.index', compact('users'));
     }
-    public function regissterfrom()
-    {   $branches = Branch::all(); // Fetch all branches
-        $roles = Role::all(); // Fetch all roles
+    public function registerForm()
+    {
+        $branches = Branch::all();
+        $roles = Role::all();
         return view('auth.register', compact('roles', 'branches'));
     }
     /**
@@ -41,6 +42,22 @@ class UserController extends Controller
     public function edit(User $user)
     {
         return view('users.edit', compact('user'));
+    }
+
+    /**
+     * Update password from admin modal form.
+     */
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', $user->name . '-ის პაროლი წარმატებით შეიცვალა.');
     }
 
     /**

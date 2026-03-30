@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -38,6 +38,17 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    /**
+     * The user has been authenticated — check if their account is active.
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->status == 2) {
+            Auth::logout();
+            return redirect('/login')->withErrors(['email' => 'მომხმარებელი გათიშულია']);
+        }
+    }
+
    /**
      * Log the user out of the application.
      *

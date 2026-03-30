@@ -207,7 +207,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="payment_amount" class="form-label">თანხა</label>
-                        <input type="number" step="0.01" class="form-control" id="payment_amount" name="payment_amount" required>
+                        <input type="number" step="0.01" class="form-control" id="payment_amount" name="payment_amount" value="{{ number_format($loan->interest, 2, '.', '') }}" readonly>
                     </div>
                     <div class="mb-3">
             <label for="comment" class="form-label">კომენტარი</label>

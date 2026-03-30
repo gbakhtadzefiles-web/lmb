@@ -79,7 +79,7 @@ if ($statusId === 'active_group') {
         });
     }
 
-    $loans = $query->orderBy('loan_id', 'desc')->paginate(50);
+    $loans = $query->orderBy('loan_id', 'desc')->paginate(100);
 
     return view('loans.index', compact('loans', 'statuses', 'activeLoanSums', 'monthlyInterest', 'monthlyPrincipal'))->withRequest($request->all());
 }
@@ -109,6 +109,7 @@ if ($statusId === 'active_group') {
             'email' => 'required|email',
             'pass' => 'nullable|string|max:255',
             'imei' => 'nullable|string|max:255',
+            'loan_type' => 'required|in:1,2',
         ]);
 
         $client = Client::firstOrCreate(
@@ -145,6 +146,7 @@ if ($statusId === 'active_group') {
             'user_id' => Auth::id(),
             'interest' => $interest,
             'number_of_d' => $validated['number_of_d'],
+            'loan_type' => $validated['loan_type'],
         ]);
         $loan->save();
 

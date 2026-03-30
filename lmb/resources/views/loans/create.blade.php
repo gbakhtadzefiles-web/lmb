@@ -106,7 +106,28 @@
                 </div>
             </div>
         </div>
+<!-- Loan Type Toggle -->
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">პირობა</div>
+            <div class="card-body">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="loan_type_radio" id="type_full" value="1" checked>
+                    <label class="form-check-label" for="type_full">სრულად</label>
+                </div>
 
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="loan_type_radio" id="type_partial" value="2">
+                    <label class="form-check-label" for="type_partial">ტარებით</label>
+                </div>
+
+                <!-- Hidden field that actually gets submitted -->
+                <input type="hidden" name="loan_type" id="loan_type" value="1">
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Comments Section -->
         <div class="row mt-3">
             <div class="col-md-12">
@@ -182,6 +203,12 @@ $(document).ready(function() {
         loadBrands(typeId); // Load brands for the selected typeId
     });
 });
+    // Loan Type Switch Handler
+  $(document).ready(function () {
+        $('input[name="loan_type_radio"]').on('change', function () {
+            $('#loan_type').val($(this).val());
+        });
+    });
 </script>
 
 

@@ -9,6 +9,8 @@ use App\Http\Controllers\{
     PaymentController,
     HomeController,
     CommentController,
+    ReportsController,
+    BranchController,
     Auth\LoginController,
     Auth\RegisterController
 };
@@ -33,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/loans/blocked', [LoanController::class, 'blocked'])->name('loans.blocked');
     Route::get('/loans/toblock', [LoanController::class, 'toblock'])->name('loans.toblock');
     Route::resource('clients', ClientController::class);
+    Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
+    Route::post('/branches', [BranchController::class, 'store'])->name('branches.store');
     Route::resource('loans', LoanController::class);
     Route::resource('collaterals', CollateralController::class);
     Route::post('/register', [UserController::class, 'register']);
@@ -46,6 +50,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Brands API
     Route::get('/api/brands/{type}', [BrandController::class, 'getByType']);
+    // Report Routes
+    Route::get('/reports/loans', [ReportsController::class, 'loanReport'])->name('reports.loans');
+    Route::get('/reports/loans/export', [ReportsController::class, 'exportExcel'])->name('reports.loans.export');
+ 
 });
 
 // Admin Routes with a separate middleware to check for admin ro
@@ -64,7 +72,8 @@ Route::middleware(['admin'])->group(function () {
    
     //Route::post('/activities', [UserController::class, 'activities'])->name('users.activities');
     Route::get('/users/reset/{id}', [UserController::class, 'resetPassword'])->name('users.reset');
-    
+    Route::patch('/users/{id}/password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+
     Route::get('/users/disable/{id}', [UserController::class, 'disableUser'])->name('users.disable');
     Route::get('/users/enable/{id}', [UserController::class, 'enableUser'])->name('users.enable');
 });

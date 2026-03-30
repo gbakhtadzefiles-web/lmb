@@ -53,7 +53,7 @@
                 <th>პირადი ნომერი</th>
                 <th>სახელი</th>
                 <th>ტელეფონი</th>
-                <th>ბრენდი</th>
+                <th>პირობა</th>
                 <th>მოდელი</th>
                 <th>კოდი</th>
                 <th>@</th>
@@ -61,13 +61,13 @@
                 <th>შემოსატანი</th>
                 <th>%</th>
                 <th>შემოტანის თარიღი</th>
-                <th>ოპერატორი</th>
+                <!-- <th>ოპერატორი</th> -->
                 <th>სტატუსი</th>
                 <th>ქმედებები</th>
             </tr>
         </thead>
         <tbody>
-   @foreach($loans as $loan)
+@foreach($loans as $loan)
 @php
     $rowColor = match($loan->loan_color) {
         2 => '#f8d7da', // light red
@@ -75,6 +75,12 @@
         4 => '#fff3cd', // light yellow
         default => '#ffffff' // white
     };
+
+    // Override to light blue if loan_type is 2 and loan_color is default (1)
+    if ($loan->loan_color == 1 && $loan->loan_type == 2) {
+        $rowColor = '#d1ecf1'; // light blue
+    }
+
     $noteText = $loan->note ?? '';
 @endphp
  
@@ -83,7 +89,15 @@
     <td>{{ $loan->client->personal_id ?? 'N/A' }}</td>
     <td>{{ $loan->client->name ?? 'N/A' }}</td>
     <td>{{ $loan->client->phone ?? 'N/A' }}</td>
-    <td>{{ $loan->collateral->brand ?? 'N/A' }}</td>
+    <td>
+    @if ($loan->loan_type == 1)
+        სრულად
+    @elseif ($loan->loan_type == 2)
+        ტარებით
+    @else
+        უცნობი
+    @endif
+   </td>
     <td>{{ $loan->collateral->model ?? 'N/A' }}</td>
     <td>{{ $loan->collateral->pass ?? 'N/A' }}</td>
     <td>{{ $loan->collateral->email ?? 'N/A' }}</td>
@@ -91,7 +105,7 @@
     <td>{{ number_format($loan->next_payment_amount, 2) }}</td>
     <td>{{ number_format($loan->interest, 2) }}</td>
     <td>{{ $loan->next_payment_date ? $loan->next_payment_date->format('Y-m-d') : 'N/A' }}</td> 
-    <td>{{ $loan->user->name ?? 'N/A' }}</td>
+    <!-- <td>{{ $loan->user->name ?? 'N/A' }}</td> -->
     <td>{{ $loan->status->name ?? 'N/A' }}</td>
     <td>
         <div class="dropdown">

@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
-    public function users()
-{
-    return $this->hasMany(User::class);
-}
 
+    public $timestamps = false;
+
+    protected $fillable = ['name', 'status'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

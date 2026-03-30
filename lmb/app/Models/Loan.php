@@ -34,7 +34,7 @@ public function comments()
     protected $fillable = [
         'client_id', 'collateral_id', 'loan_amount', 'interest_rate', 
         'loan_start_date', 'next_payment_date', 'next_payment_amount', 
-        'status', 'user_id', 'branch_id', 'interest', 'number_of_d',
+        'status', 'user_id', 'branch_id', 'interest', 'number_of_d', "loan_type"
     ];
 
     // Add or update the $casts property to include your date fields
